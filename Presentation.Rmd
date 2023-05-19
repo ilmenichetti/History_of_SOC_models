@@ -38,42 +38,91 @@ A more structured approach to understand its nature initiated during past centur
 *Waksman, S.A., 1938. Humus. Origin, Chemical Composition and Importance in Nature, second ed. revised. Williams and Wilkins, Baltimore, p. 526*
 
 
+## The Beginning of the conventional SOC decay theory (1945)
+Hénin and Dupuis are probably the first to conceptualize a SOC ($C_s$) decay model:
+$$
+\frac{dC_s}{dt} = h \cdot C_i - k \cdot C_s
+$$
+In their formulation, the inputs to the SOC are defined by the C inputs $C_i$ times a humification constant $h$.
+
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=5.5}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,>=stealth',thick]
+        \node[state] (1) {$C_s$};
+        \coordinate[left of=1] (d1);
+        \coordinate[right of=1] (d2);
+        \draw [->] (d1) to node[auto] {$h \cdot C_i$} (1);
+        \draw [->] (1) to node[auto] {$k \cdot C_s$} (d2);
+    \end{tikzpicture}
+    
+```
+
+
+
+
 ## The Beginning of the conventional SOC decay theory (1963)
 <div class="columns-2">
   <div class="centered">
-  ![](Olson.jpg){width=85%}
+  ![](Olson.jpg){width=50%}
   </div>
 
+Jerry Olson stated in the incipit of his SOC modeling paper: *"The net rate of change in energy or material stored in an ecological system or its parts equals the **rate of income** minus the **rate of loss**."*
 
-Jerry Olson (one of the first system ecologists) stated in the incipit of his SOC modeling paper:  
- 
-> "The net rate of change in energy or material stored in an ecological system
-> or its parts equals the rate of income minus the rate of loss."
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=2.5}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,>=stealth',thick]
+        \node[state] (1) {$C_s$};
+        \coordinate[left of=1] (d1);
+        \coordinate[right of=1] (d2);
+        \draw [->] (d1) to node[auto] {$I$} (1);
+        \draw [->] (1) to node[auto] {$k \cdot C_s$} (d2);
+    \end{tikzpicture}
+    
+```
 
-And described it mathematically with a linear differential equation.
+And described it mathematically with a linear differential equation very similar to Hénin and Dupuis model:
 $$
-\frac{dC}{dt} = I - k \cdot C
+\frac{dC_s}{dt} = I - k \cdot C_s
 $$
-
-Such equation is still the basis for most SOC models available around.
-
+Compared to Hénin and Dupuis, the term $I$ substitutes $h \cdot C_i$, but since $h$ is anyway a latent variable the two models are virtually the same. Such equation is still the basis for most SOC models available around.
 </div>
+
+
+
+## Differences between Olson and Hénin & Dupuis
+While Olson's model is actually a single pool model, Hénin & Dupuis define the input flux to the soil as a fraction of the total C input $C_i$, which can describe the litter. When considering the implicit fluxes from the system (respiration), in order to close the mass balance, we need to account also for the respiration from the litter:
+
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=3.5}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,>=stealth',thick]
+        \node[state] (1) {$C_s$};
+        \coordinate[left of=1] (d1);
+        \coordinate[above of=1] (d2);
+        \coordinate[above of=d1] (d0);
+        \coordinate[left of=d1] (d00);
+        \draw [->] (d00) to node[auto] {$C_i$} (d1);
+        \draw [->] (d1) to node[auto] {$h \cdot C_i$} (1);
+        \draw [->] (1) to node[auto] {$k \cdot C_s$} (d2);
+        \draw [->] (d1) to node[auto] {$(1-h) \cdot C_i$} (d0);
+    \end{tikzpicture}
+    
+```
 
 
 
 ## Many many many many SOC models
 
-A **(for sure incomplete)** list of the major SOC models over time:
+A **(badly incomplete)** list of the major (only linear ones, we'll come to this later) SOC models over time:
 
-```{tikz, fig.cap = "", fig.ext = 'png'}
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=10.5}
 \usetikzlibrary{mindmap,shadows}
 
 \begin{tikzpicture}[]
   
   % limits
-  \newcount\yearOne; \yearOne=1960
+  \newcount\yearOne; \yearOne=1940
   \def\w{15}    % width of axes
-  \def\n{5}     % number of decades
+  \def\n{7}     % number of decades
   \def\lt{0.40} %  ten tick length
   \def\lf{0.36} % five tick length
   \def\lo{0.30} %  one tick length
@@ -88,6 +137,16 @@ A **(for sure incomplete)** list of the major SOC models over time:
     \else
       \def\yyp{{(\lt*(0.10+#2)}}; \def\yyw{{(\yyp+\lt*#3)}}
       \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[above,black] at (\xy,\yyw) {#4};
+    \fi}
+  
+    \def\yearArrowLabelRed(#1,#2,#3,#4){
+    \def\xy{{(#1-\yearOne)*\w/\n/10}}; \pgfmathparse{int(#2*100)};
+    \ifnum \pgfmathresult<0
+      \def\yyp{{(\lt*(0.90+#2))}}; \def\yyw{{(\yyp-\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[below,red] at (\xy,\yyw) {#4};
+    \else
+      \def\yyp{{(\lt*(0.10+#2)}}; \def\yyw{{(\yyp+\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[above,red] at (\xy,\yyw) {#4};
     \fi}
   
   % axis
@@ -110,21 +169,25 @@ A **(for sure incomplete)** list of the major SOC models over time:
   }
   
   % label
-  \yearArrowLabel(1963, 1.0,1.0,Olson model)
+  \yearArrowLabelRed(1945, 1.0,1.0,Hénin and Dupuis model)
+  \yearArrowLabelRed(1963, 1.0,1.0,Olson model)
   \yearArrowLabel(1996, 1.0,1.0,CANDY)
   \yearArrowLabel(1987, 1,1.5,Century)
-  \yearArrowLabel(1991, 1,1.0,DAISY)
+  \yearArrowLabel(1991, 1,0.5,DAISY)
   \yearArrowLabel(2005, 1,1.0,Yasso)
-  \yearArrowLabel(2001, 1,1.0,ROMUL)
-  \yearArrowLabel(1992, 1,2.1,DNDC)
-  \yearArrowLabel(1987, -1,1.5,RothC)
+  \yearArrowLabel(2001, 1,2.0,ROMUL)
+  \yearArrowLabel(1992, 1,2.3,DNDC)
+  \yearArrowLabel(1987, -1,2,RothC)
   \yearArrowLabel(1977,-1.0,2.0,\small RothC core idea )
-  \yearArrowLabel(1997, -1,2.0,ICBM)
-  \yearArrowLabel(1996, -1,1.0,Q)
+  \yearArrowLabel(1997, -1,2.4,ICBM)
+  \yearArrowLabel(1996, -1,1.3,Q)
 
   
 \end{tikzpicture}
 ```
+
+A relatively recent literature review (Campbell and Paustian 2015) found **87** different SOM models (and this not considering broader models, like complete ecosystem models, and more speculative studies on SOM model structures)
+
 
 
 ## The Golden Era: RothC (1977)
@@ -158,7 +221,7 @@ In the most recent decades we can observe a very large amount of models being pu
 </div>
 
 ## One possible tree of SOC models concepts
-```{tikz, fig.cap = "", fig.ext = 'png',fig.width=5.5}
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=5.5}
 
 \usetikzlibrary{mindmap,shadows}
 
@@ -190,6 +253,27 @@ In the most recent decades we can observe a very large amount of models being pu
 
 Each of these choices will bring implications in the extrapolation we can do with the model, some quite dramatic.
 
+
+## The advantages of minimalism: introducing ICBM
+ICBM is a rather minimalistic model with only two pools, one ($Y$) representing the young litter and another ($O$) representing the "old", or "humified", organic matter.  
+The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$. This would represent the assumption that all organic material coming to the soil is either instantly respired or transferred to the SOM, which is what is implied in Hénin and Depuis conceptualization.
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=4.5}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick]
+        \node[state] (1) {$O$};
+        \node[state, left of=1] (d1) {$Y$};
+        \coordinate[above of=1] (d2);
+        \coordinate[above of=d1] (d0);
+        \coordinate[left of=d1] (d00);
+        \draw [->] (d00) to node[auto] {$I$} (d1);
+        \draw [->] (d1) to node[auto] {$h \cdot k_y \cdot Y$} (1);
+        \draw [->] (1) to node[auto] {$k_o \cdot O$} (d2);
+        \draw [->] (d1) to node[auto] {$(1-h) \cdot k_y \cdot Y$} (d0);
+    \end{tikzpicture}
+    
+```
+
+
 ## The advantages of minimalism: easily solved steady states
 No system will accumulate or lose C indefinitely. The rates will always tend to zero.  
 When the rate of SOC variation is zero, the system is in **equilibrium**, and inputs equal outputs. For example a land use change from a relatively rich environment (a forest) to an environment with less C inputs (agriculture). SOC will decrease over time until it reaches the new equilibrium:
@@ -220,7 +304,11 @@ Any linear model, with an arbitrary number of pools, has an analytical solution.
 
 ## The advantages of more pools: long-term accuracy
 
+
 ## The cyclical discussion: "breaking" SOC decomposition paradigm?
+
+TIMELINE HERE
+
 
 ## Representing reality: the view of experimentalists
 ![](Schimel.jpg){width=70%}
@@ -235,14 +323,13 @@ We know that SOC decomposition is process mediated by microbes, their growth and
 ## The cyclical discussion: is more realistic more better?
 Making decomposition controlled by enzymes/microbes means making the model nonlinear, moving from ordinary differential equations to partial differential equations.
 
-![](SOC.png){width=70%}
+![](SOC.png){width=60%}
 
-Nonlinearities in models can lead to weird behaviors depending on their structure and parameterizaton, for example oscillations.  
-Because of the nonlinear (more than linear) effects, any mistake can have an amplificated effect on predictions.
+Nonlinearities in models can lead to weird behaviors, for example oscillations. Because of the nonlinear (more than linear) effects, any mistake can have an amplificated effect on predictions.
 
 ## More complicated (nonlinear) models bring extrapolation uncertainty
 
-![](Zheng_et_al.png){width=70%}
+![](Zheng_et_al.png){width=60%}
 Shi, Zheng, Sean Crowell, Yiqi Luo, and Berrien Moore. “Model Structures Amplify Uncertainty in Predicted Soil Carbon Responses to Climate Change.” Nature Communications 9, no. 1 (June 4, 2018)
 
 ## Scary: linear algebra for linear models
@@ -257,7 +344,7 @@ $$
     \begin{bmatrix} -k_y & \epsilon \\ 0 & -k_o  \end{bmatrix} \cdot
     \begin{bmatrix} Y \\ O \end{bmatrix}
 $$
-This notation allows us to generalize and makes easy to see the main differences between model structures:
+This notation allows us to generalize the main differences between model structures:
 ```{r}
 
 df <- data.frame (first_column  = c("$I+\\xi \\cdot A \\cdot C_{(t)}$", "$I+\\xi \\cdot A (C_{(t)}) \\cdot C_{(t)}$"),
@@ -269,4 +356,4 @@ rownames(df)<-c("Linear", "Non-linear")
 knitr::kable(df)
 ```
 
-(it has also the pretty neat advantages of making quite easy to find the analytical steady state for anything linear...)
+(it brings also the pretty neat advantage of an easy nalytical steady state for anything linear...)
