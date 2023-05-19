@@ -1,0 +1,272 @@
+---
+title: "The evolution of SOC modeling"
+author: "Lorenzo Menichetti"
+date: "`r Sys.Date()`"
+output:
+  ioslides_presentation:
+    widescreen: yes
+    smaller: yes
+    css: slidestyles2.css
+  beamer_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Soil organic matter gets interesting (1804)
+<div class="columns-2">
+  <div class="centered">
+  ![](Saussure.png){height=50%}
+  </div>
+
+Some systematic observations about SOM:  
+
+1. since no continuous accumulation of SOM occurs even with continuous organic inputs, some of these inputs must be destroyed,
+2. the amount which is destroyed must, to a certain extent, be proportional to the absolute existing amount,
+3. limits to SOM accretion must vary depending on climate, nature of mother bedrock, vegetation, cropping system and fertility of the land,
+4. even if all conditions are favorable to SOM accumulation, there must be a maximum for the thickness of the humus layer beyond which destructive causes equal productive ones.
+
+</div>
+
+## Soil organic matter gets attention (1938)
+
+A more structured approach to understand its nature initiated during past century:
+
+![](waksman_1938.png){width=70%}
+
+*Waksman, S.A., 1938. Humus. Origin, Chemical Composition and Importance in Nature, second ed. revised. Williams and Wilkins, Baltimore, p. 526*
+
+
+## The Beginning of the conventional SOC decay theory (1963)
+<div class="columns-2">
+  <div class="centered">
+  ![](Olson.jpg){width=85%}
+  </div>
+
+
+Jerry Olson (one of the first system ecologists) stated in the incipit of his SOC modeling paper:  
+ 
+> "The net rate of change in energy or material stored in an ecological system
+> or its parts equals the rate of income minus the rate of loss."
+
+And described it mathematically with a linear differential equation.
+$$
+\frac{dC}{dt} = I - k \cdot C
+$$
+
+Such equation is still the basis for most SOC models available around.
+
+</div>
+
+
+
+## Many many many many SOC models
+
+A **(for sure incomplete)** list of the major SOC models over time:
+
+```{tikz, fig.cap = "", fig.ext = 'png'}
+\usetikzlibrary{mindmap,shadows}
+
+\begin{tikzpicture}[]
+  
+  % limits
+  \newcount\yearOne; \yearOne=1960
+  \def\w{15}    % width of axes
+  \def\n{5}     % number of decades
+  \def\lt{0.40} %  ten tick length
+  \def\lf{0.36} % five tick length
+  \def\lo{0.30} %  one tick length
+  
+  % help functions
+  \def\yearLabel(#1,#2){\node[above] at ({(#1-\yearOne)*\w/\n/10},\lt) {#2};}
+  \def\yearArrowLabel(#1,#2,#3,#4){
+    \def\xy{{(#1-\yearOne)*\w/\n/10}}; \pgfmathparse{int(#2*100)};
+    \ifnum \pgfmathresult<0
+      \def\yyp{{(\lt*(0.90+#2))}}; \def\yyw{{(\yyp-\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[below,black] at (\xy,\yyw) {#4};
+    \else
+      \def\yyp{{(\lt*(0.10+#2)}}; \def\yyw{{(\yyp+\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[above,black] at (\xy,\yyw) {#4};
+    \fi}
+  
+  % axis
+  %\draw[thick] (0,0) -- (\w,0);
+  \draw[->,thick] (-\w*0.03,0) -- (\w*1.03,0);
+  
+  % ticks
+  \foreach \tick in {0,1,...,\n}{
+    \def\x{{\tick*\w/\n}}
+    \def\year{\the\numexpr \yearOne+\tick*10 \relax}
+  	\draw[thick] (\x,\lt) -- (\x,-\lt) % ten tick
+	             node[below] {\year};
+	
+	\ifnum \tick<\n
+	  \draw[thick] ({(\x+\w/\n/2)},0) -- ({(\x+\w/\n/2)},\lf); % five tick
+      \foreach \ticko in {1,2,3,4,6,7,8,9}{
+        \def\xo{{(\x+\ticko*\w/\n/10)}}
+  	    \draw[thick] (\xo,0) -- (\xo,\lo);  % one tick
+	}\fi
+  }
+  
+  % label
+  \yearArrowLabel(1963, 1.0,1.0,Olson model)
+  \yearArrowLabel(1996, 1.0,1.0,CANDY)
+  \yearArrowLabel(1987, 1,1.5,Century)
+  \yearArrowLabel(1991, 1,1.0,DAISY)
+  \yearArrowLabel(2005, 1,1.0,Yasso)
+  \yearArrowLabel(2001, 1,1.0,ROMUL)
+  \yearArrowLabel(1992, 1,2.1,DNDC)
+  \yearArrowLabel(1987, -1,1.5,RothC)
+  \yearArrowLabel(1977,-1.0,2.0,\small RothC core idea )
+  \yearArrowLabel(1997, -1,2.0,ICBM)
+  \yearArrowLabel(1996, -1,1.0,Q)
+
+  
+\end{tikzpicture}
+```
+
+
+## The Golden Era: RothC (1977)
+
+## The Golden Era: Century (1987)
+
+## An interesting outlier: Q 
+
+## The problem of model initialization
+
+## The dream of "data-based" initialization: Yasso, Zimmerman, etc...
+
+
+## Things get complicated
+Soil C models are required to represent more things than just the aerobic C decomposition process.  
+In the most recent decades we can observe a very large amount of models being published that are based on many different processes and integrate many components (es. ECOSSE, ORCHIDEE, DayCent).
+
+
+## Representing reality?
+<div class="columns-2">
+  <div class="centered">
+  ![](me.jpg){height=350}
+  316 kB
+  </div>
+
+<div class="centered">
+  ![](me_model.jpg){height=350}
+  11 kB
+  </div>
+
+</div>
+
+## One possible tree of SOC models concepts
+```{tikz, fig.cap = "", fig.ext = 'png',fig.width=5.5}
+
+\usetikzlibrary{mindmap,shadows}
+
+\begin{tikzpicture}
+  \path[mindmap,concept color=black,text=white]
+    node[concept] {SOC decay models}
+    [clockwise from=0]
+    child[concept color=green!50!black] {
+      node[concept] {Linear}
+      [clockwise from=95]
+      child { node[concept] {Minimalist}}
+      child { node[concept] {Lab-based initialization}}
+      child { node[concept] {Inert} }
+      child { node[concept] {Feedback} }
+      child[concept color=orange] { node[concept] {continuous} }
+    }
+    child[concept color=red] { node[concept] {Nonlinear} }
+
+;
+\end{tikzpicture}
+```
+
+## The basic SOM model choices
+
+* Do we assume some "inert" SOM?
+* How many different C pools do we represent?
+* Do we represent mass feedbacks?
+* Is it fine to use ordinary differential equations, or do we need PDE?
+
+Each of these choices will bring implications in the extrapolation we can do with the model, some quite dramatic.
+
+## The advantages of minimalism: easily solved steady states
+No system will accumulate or lose C indefinitely. The rates will always tend to zero.  
+When the rate of SOC variation is zero, the system is in **equilibrium**, and inputs equal outputs. For example a land use change from a relatively rich environment (a forest) to an environment with less C inputs (agriculture). SOC will decrease over time until it reaches the new equilibrium:
+```{r echo=FALSE, out.width="50%"}
+X_0=50
+k=0.1
+tim=seq(1:100)
+L=2
+X=c(X_0,(L/k)*(1-exp(-k*tim))+X_0*exp(-k*tim))
+
+plot(c(0,tim), X, type="l", ylim=c(0,55), ylab="C stocks", xlab="Time", yaxt="n", xaxt="n")
+abline(h=X_0, lty=2, col="red")
+text(10,X_0+1.2, "Initial steady state", col="red", cex=0.6)
+abline(h=L/k, lty=2, col="darkgreen")
+text(10,L/k+1.2, "Final steady state", col="darkgreen", cex=0.6)
+
+```
+
+## The advantages of minimalism: easily solved steady states
+The steady states are, by definition, where the rate of variation $\frac{dC}{dt}=0$. For a single pool model (Olson) this becomes easily solved. The steady state means that for a certain amount of C $C_{ss}$ the variation is zero: $0 = I - k \cdot C_{ss}$, which means $k \cdot C_{ss} = I$ and therefore $C_{ss}=\frac{I}{k}$.
+  
+A slightly more complicated model, like the two pool (Y and O) ICBM, has still relatively simple analyitcal solution:
+$$
+Y_{ss}=\frac{I}{k_y}\\
+O_{ss}=\epsilon\cdot\frac{I}{k_o}
+$$
+Any linear model, with an arbitrary number of pools, has an analytical solution. But having it so short and easily manageable can sometimes be useful.
+
+## The advantages of more pools: long-term accuracy
+
+## The cyclical discussion: "breaking" SOC decomposition paradigm?
+
+## Representing reality: the view of experimentalists
+![](Schimel.jpg){width=70%}
+*Schimel, Joshua. “Modeling Ecosystem-Scale Carbon Dynamics in Soil: The Microbial Dimension.” Soil Biology and Biochemistry 178 (March 2023)*
+
+## Representing reality: the view of experimentalists
+We know that SOC decomposition is process mediated by microbes, their growth and by their exoenzymes production, so representing these processes will produce more accurate models.  
+
+![](Schimel2.jpg){width=55%}
+*Schimel, Joshua. “Modeling Ecosystem-Scale Carbon Dynamics in Soil: The Microbial Dimension.” Soil Biology and Biochemistry 178 (March 2023)*
+
+## The cyclical discussion: is more realistic more better?
+Making decomposition controlled by enzymes/microbes means making the model nonlinear, moving from ordinary differential equations to partial differential equations.
+
+![](SOC.png){width=70%}
+
+Nonlinearities in models can lead to weird behaviors depending on their structure and parameterizaton, for example oscillations.  
+Because of the nonlinear (more than linear) effects, any mistake can have an amplificated effect on predictions.
+
+## More complicated (nonlinear) models bring extrapolation uncertainty
+
+![](Zheng_et_al.png){width=70%}
+Shi, Zheng, Sean Crowell, Yiqi Luo, and Berrien Moore. “Model Structures Amplify Uncertainty in Predicted Soil Carbon Responses to Climate Change.” Nature Communications 9, no. 1 (June 4, 2018)
+
+## Scary: linear algebra for linear models
+Compartmental models can be expressed within a generic linear algebra (matrix) notation
+$$
+\frac{dC_{(t)}}{dt}=I_{(t)} + A_{(t)} \cdot C_{(t)}
+$$
+For example the ICBM model (assuming constant average inputs), written explicitly, is:
+$$
+ \frac{dC_{(t)}}{dt}=\begin{bmatrix} I\\  0\\  \end{bmatrix} +
+  \xi \cdot
+    \begin{bmatrix} -k_y & \epsilon \\ 0 & -k_o  \end{bmatrix} \cdot
+    \begin{bmatrix} Y \\ O \end{bmatrix}
+$$
+This notation allows us to generalize and makes easy to see the main differences between model structures:
+```{r}
+
+df <- data.frame (first_column  = c("$I+\\xi \\cdot A \\cdot C_{(t)}$", "$I+\\xi \\cdot A (C_{(t)}) \\cdot C_{(t)}$"),
+                  second_column = c("$I+\\xi_{(t)} \\cdot A \\cdot C_{(t)}$", "$I+\\xi (t) \\cdot A (C_{(t)}) \\cdot C_{(t)}$")
+                  )
+colnames(df)<-c("Autonomous", "Non-autonomous")
+rownames(df)<-c("Linear", "Non-linear")
+  
+knitr::kable(df)
+```
+
+(it has also the pretty neat advantages of making quite easy to find the analytical steady state for anything linear...)
