@@ -2,7 +2,12 @@
 title: "ICBM differential form implementation in R"
 author: "Lorenzo Menichetti"
 date: "`r Sys.Date()`"
-output: ioslides_presentation
+output:
+  ioslides_presentation:
+    widescreen: yes
+    smaller: yes
+    css: slidestyles2.css
+  beamer_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -43,7 +48,7 @@ ODEfun <- function(time=seq(1:times_range), state=state, parms=parms) {
   })
 }
 ```
-The order of the results will be the one specified in the output (`return(list(..., ..., ...))``).
+The order of the results will be the one specified in the output (`return(list(..., ..., ...))`).
 
 ## Definiting initial state and parameters
 We need to define the initial state of the system. This is a vector containing one entry for each of the variables defined in the ODE, and the order should match.
