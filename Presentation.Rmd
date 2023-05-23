@@ -282,7 +282,11 @@ Each of these choices will bring implications in the extrapolation we can do wit
 
 ## The advantages of minimalism: introducing ICBM
 ICBM is a rather minimalistic model with only two pools, one ($Y$) representing the young litter and another ($O$) representing the "old", or "humified", organic matter.  
+<<<<<<< HEAD
 The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$: all organic material coming to the soil is either instantly respired or transferred to the SOM.
+=======
+The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$. This would represent the assumption that all organic material coming to the soil is either instantly respired or transferred to the SOM, which is what is implied in Hénin and Depuis conceptualization.
+>>>>>>> ed3fe0251ab00113bc3462cac586b4e6f7ed5e3e
 ```{tikz, fig.cap = "", fig.ext = 'png', fig.width=4.5}
 \usetikzlibrary{arrows,automata} 
     \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick]
