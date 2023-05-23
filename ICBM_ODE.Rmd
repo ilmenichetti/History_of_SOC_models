@@ -26,6 +26,23 @@ $$
 \frac{dY_{(t)}}{dt}=I - k_y \cdot r \cdot Y \\
 \frac{dO_{(t)}}{dt}= h \cdot k_y \cdot r  \cdot Y  - k_o \cdot r  \cdot O
 $$
+  
+Which can be conceptually visualized like this:
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=3}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick]
+        \node[state] (1) {$O$};
+        \node[state, left of=1] (d1) {$Y$};
+        \coordinate[above of=1] (d2);
+        \coordinate[above of=d1] (d0);
+        \coordinate[left of=d1] (d00);
+        \draw [->] (d00) to node[auto] {$I$} (d1);
+        \draw [->] (d1) to node[auto] {$h \cdot k_y \cdot Y$} (1);
+        \draw [->] (1) to node[auto] {$k_o \cdot O$} (d2);
+        \draw [->] (d1) to node[auto] {$(1-h) \cdot k_y \cdot Y$} (d0);
+    \end{tikzpicture}
+    
+```
 
 ## Loading the solver
 
@@ -40,7 +57,8 @@ it is enough to know that it calculates the solution with numerical optimization
 
 ```{r, echo = TRUE}
 ##function (differential form)
-ODEfun <- function(time=seq(1:times_range), state=state, parms=parms) {
+ODEfun <- function(time=seq(1:times_range), state=state, 
+                   parms=parms) {
   with(as.list(c(state, parms)), {
     .Y=I-ky*r*Y
     .O=h*ky*r*Y-ko*r*O
@@ -67,7 +85,8 @@ time_vector=seq(0,100)
 ## Running the ODE within the solver 
 We can now run our solver to find the integrated solution over time:
 ```{r, echo = TRUE}
-simulation <- ode(y = init, time = time_vector, func = ODEfun, parms = parameters)
+simulation <- ode(y = init, time = time_vector, func = ODEfun, 
+                  parms = parameters)
 total_SOC=simulation[,2]+simulation[,3]
 ```
 
@@ -78,9 +97,10 @@ total_SOC=simulation[,2]+simulation[,3]
 
 ## Plotting the results
 ```{r pressure}
-plot(simulation[,1], total_SOC,  type="l", ylim=c(0, max(total_SOC)*1.2), xlab="time")
+plot(simulation[,1], total_SOC,  type="l", ylim=c(0, max(total_SOC)*1.2), xlab="time", ylab="C")
 lines(simulation[,2], col="darkgreen")
 lines(simulation[,3], col="darkorange")
+legend("topleft", c("Total SOC", "Y", "O"), bty="n", lty=1, pch=NA, col=c("black", "darkgreen", "darkorange"))
 ```
 
 ## What if?
