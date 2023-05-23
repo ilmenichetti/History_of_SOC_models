@@ -37,8 +37,8 @@ Moyano, F.E., Manzoni, S., Chenu, C., 2013. [...] Soil Biology and Biochemistry 
 ## Climate scaling?
 The most basic version of the ICBM model can be modified by rescaling the decay kinetics with climate:
 $$
-\frac{dY_{(t)}}{dt}=I_{(t)} - k_y \cdot \color{red}{r} \cdot Y \\
-\frac{dY_{(t)}}{dt}= h \cdot k_y \cdot \color{red}{r}  \cdot Y  - k_o \cdot \color{red}{r}  \cdot O
+\frac{dY}{dt}=I_{(t)} - k_y \cdot \color{red}{r} \cdot Y \\
+\frac{dO}{dt}= h \cdot k_y \cdot \color{red}{r}  \cdot Y  - k_o \cdot \color{red}{r}  \cdot O
 $$
 This scaling can be introduced as a variable over time ($r_{(t)}$) or as an average constant value ($\bar{r}$) (of course introducing a scaling variable over time destroys the steady state assumption).  
   
@@ -54,7 +54,7 @@ But there is no difficulty in adding more processes if we think they are affecti
 
 
 ## Temperature scaling
-![](Re_temp.jpg){width=70%}
+![](Re_temp.jpg){width=90%}
 
 
 
@@ -89,7 +89,7 @@ This is relatively rare (e.g. Daniel and Danson, 2010) due to the fact that rare
 
 
 ## Moisture scaling
-![](Re_moist.jpg){width=70%}
+![](Re_moist.jpg){width=90%}
 
 ## Moisture scaling
 Also for moisture the functions are classifiable under three groups:
@@ -119,7 +119,7 @@ plot(p, dbeta(p, 2, 2), type='l', xaxt="n", yaxt="n", ylab="", xlab="", col="blu
 </div>
 
 ## Combination
-![](Re_crop.jpg){width=70%}
+![](Re_crop.jpg){width=90%}
 
 
 
@@ -140,6 +140,7 @@ In this case the time scale does matter because precipitations accumulate. For e
 
 ## The steps of the calculation | Temperature scaling
 The scaling for temperature is relatively straightforward:
+
 1. Estimate soil temperature from air temperature  
 2. Calculate the temperature scaling based on soil temperature  
 
