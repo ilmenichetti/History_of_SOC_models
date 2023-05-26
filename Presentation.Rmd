@@ -195,6 +195,16 @@ When computer power started to be reasonably available, more complex models tryi
   ![](rothc.jpg){height=300}
 
 ## The Golden Era: Century (1987)
+<div class="columns-2">
+  <div class="centered">
+![](century.jpg){width=65%}
+  </div>
+
+<div>
+These models rely mathematically on the same principle enunciated by Hénin and Dupuis or Olson, but involve more pools. These pools are used to represent various hypotheses to modify the initial first-order kinetic assumption, ultimately to represent better the data available for calibrating the model. And none of them is really right or wrong, or better in absolute terms.
+  </div>
+</div>
+
 
 ## An interesting outlier: Q
 Q generalizes by assuming a continuous quality spectrum instead of discrete compartments.
@@ -211,11 +221,21 @@ plot(x,y, type = "l", lwd = 2, axes = FALSE, xlab = "quality", ylab = "amount of
 box()
 
 ```
-Very elegant, but in order to be mathematically manageable, it assumes a normal distribution for SOC quality (other assumptions can be made, but the model becomes hard to solve)
+Thetheory is very elegant, but in order to be mathematically manageable it assumes a normal distribution for SOC quality (other assumptions can be made, but the model becomes hard to solve)
 
 
 
 ## The problem of model initialization
+"Model initialization" means to specify the initial state of the system. For multi-compartment models, this means determining the initial size of each pool.  
+There are multiple ways to realize this, but **the information problem is always the same: we need to infer the pool distributions by assuming a long past history in each site**. We can assume steady state at the beginning and therefore constant inputs, or we can assume variable inputs, but the problem is in any case usually that we do not know much about past inputs and we need to be readyto make strong assumptions.  
+Methods are in general:  
+
+* Solved steady state
+* Spin-up runs
+* Possible alternative: calibrating the initial steady state
+
+These methods are essentially details about a specific implementation, but no one solves the information problem above. They might be better suited to your specific case and the assumptions you are ready to make.
+
 
 ## The dream of "data-based" initialization: soil organic matter "quality"
   ![](quality.jpg){height=450}
@@ -230,7 +250,8 @@ It kind of works, kind of doesn't.
 ## Things get complicated
 Soil C models are required to represent more things than just the aerobic C decomposition process.  
 In the most recent decades we can observe a very large amount of models being published that are based on many different processes and integrate many components (es. ECOSSE, ORCHIDEE, DayCent).
-
+  ![](orchidee.png){height=350}
+In these models the soil decomposition part is just a module. But it still works according to the same principles.
 
 ## Representing reality?
 <div class="columns-2">
@@ -330,6 +351,10 @@ Any linear model, with an arbitrary number of pools, has an analytical solution.
 
 ## The advantages of more pools: long-term accuracy
 
+More pools define a more complex curve. This results in less approximation, and the models become more general.  
+![](1vs3pools.png){width=70%}
+For example a 1 pool model is not going to be able to represent the long-term trends of the more recalcitrant soil components well, and already on a few decades scale it can accumulate a significant error.  
+When extrapolating on long time scales (several centuries or more) 3 or more pools are necessary (assuming we can initialize the model correctly).
 
 ## The cyclical discussion: "breaking" SOC decomposition paradigm?
 

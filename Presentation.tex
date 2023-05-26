@@ -111,7 +111,7 @@
 
 \title{The evolution of SOC modeling}
 \author{Lorenzo Menichetti}
-\date{2023-05-19}
+\date{2023-05-25}
 
 \begin{document}
 \frame{\titlepage}
@@ -196,14 +196,24 @@ balance, we need to account also for the respiration from the litter:
 
 \begin{frame}{Many many many many SOC models}
 \protect\hypertarget{many-many-many-many-soc-models}{}
-A \textbf{(for sure incomplete)} list of the major (only linear ones,
-we'll come to this later) SOC models over time:
+A \textbf{(badly incomplete)} list of the major (only linear ones, we'll
+come to this later) SOC models over time:
 
 \includegraphics{Presentation_files/figure-beamer/unnamed-chunk-4-1.png}
+
+A relatively recent literature review (Campbell and Paustian 2015) found
+\textbf{87} different SOM models (and this not considering broader
+models, like complete ecosystem models, and more speculative studies on
+SOM model structures)
 \end{frame}
 
 \begin{frame}{The Golden Era: RothC (1977)}
 \protect\hypertarget{the-golden-era-rothc-1977}{}
+When computer power started to be reasonably available, more complex
+models trying to represent SOC in more detail arised. In the decades
+between the late 70s and late 90s the foundations of most currently used
+SOC models were laid.
+\includegraphics[width=\textwidth,height=3.125in]{rothc.jpg}
 \end{frame}
 
 \begin{frame}{The Golden Era: Century (1987)}
@@ -212,15 +222,35 @@ we'll come to this later) SOC models over time:
 
 \begin{frame}{An interesting outlier: Q}
 \protect\hypertarget{an-interesting-outlier-q}{}
+Q generalizes by assuming a continuous quality spectrum instead of
+discrete compartments.
+\includegraphics{Presentation_files/figure-beamer/unnamed-chunk-5-1.pdf}
+Very elegant, but in order to be mathematically manageable, it assumes a
+normal distribution for SOC quality (other assumptions can be made, but
+the model becomes hard to solve)
 \end{frame}
 
 \begin{frame}{The problem of model initialization}
 \protect\hypertarget{the-problem-of-model-initialization}{}
 \end{frame}
 
+\begin{frame}{The dream of ``data-based'' initialization: soil organic
+matter ``quality''}
+\protect\hypertarget{the-dream-of-data-based-initialization-soil-organic-matter-quality}{}
+\includegraphics[width=\textwidth,height=4.6875in]{quality.jpg}
+\end{frame}
+
 \begin{frame}{The dream of ``data-based'' initialization: Yasso,
 Zimmerman, etc\ldots{}}
 \protect\hypertarget{the-dream-of-data-based-initialization-yasso-zimmerman-etc}{}
+Many models have developed around the idea of having measurable pools,
+or such idea developed afterwards with specific fractionation
+techniques.
+\includegraphics[width=\textwidth,height=3.125in]{zimmerman.jpg} But any
+fractionation will be based on an assumed conceptual model defining
+recalcitrance, simplifying a lot the quality function and imposing
+assumptions already on the data.\\
+It kind of works, kind of doesn't.
 \end{frame}
 
 \begin{frame}{Things get complicated}
@@ -241,7 +271,7 @@ many components (es. ECOSSE, ORCHIDEE, DayCent).
 
 \begin{frame}{One possible tree of SOC models concepts}
 \protect\hypertarget{one-possible-tree-of-soc-models-concepts}{}
-\includegraphics{Presentation_files/figure-beamer/unnamed-chunk-5-1.png}
+\includegraphics{Presentation_files/figure-beamer/unnamed-chunk-6-1.png}
 \end{frame}
 
 \begin{frame}{The basic SOM model choices}
@@ -262,6 +292,18 @@ Each of these choices will bring implications in the extrapolation we
 can do with the model, some quite dramatic.
 \end{frame}
 
+\begin{frame}{The advantages of minimalism: introducing ICBM}
+\protect\hypertarget{the-advantages-of-minimalism-introducing-icbm}{}
+ICBM is a rather minimalistic model with only two pools, one (\(Y\))
+representing the young litter and another (\(O\)) representing the
+``old'', or ``humified'', organic matter.\\
+The model is conceptually not so distant from Hénin and Dupuis model,
+and it becomes identical if the decay constant of the ``young'' pool,
+\(k_y\), is set to \(1\): all organic material coming to the soil is
+either instantly respired or transferred to the SOM.
+\includegraphics{Presentation_files/figure-beamer/unnamed-chunk-7-1.png}
+\end{frame}
+
 \begin{frame}{The advantages of minimalism: easily solved steady states}
 \protect\hypertarget{the-advantages-of-minimalism-easily-solved-steady-states}{}
 No system will accumulate or lose C indefinitely. The rates will always
@@ -272,7 +314,7 @@ change from a relatively rich environment (a forest) to an environment
 with less C inputs (agriculture). SOC will decrease over time until it
 reaches the new equilibrium:
 
-\includegraphics[width=0.5\linewidth]{Presentation_files/figure-beamer/unnamed-chunk-6-1}
+\includegraphics[width=0.5\linewidth]{Presentation_files/figure-beamer/unnamed-chunk-8-1}
 \end{frame}
 
 \begin{frame}{The advantages of minimalism: easily solved steady states}
@@ -299,6 +341,7 @@ sometimes be useful.
 \begin{frame}{The cyclical discussion: ``breaking'' SOC decomposition
 paradigm?}
 \protect\hypertarget{the-cyclical-discussion-breaking-soc-decomposition-paradigm}{}
+TIMELINE HERE
 \end{frame}
 
 \begin{frame}{Representing reality: the view of experimentalists}

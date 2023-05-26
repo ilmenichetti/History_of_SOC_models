@@ -105,16 +105,42 @@ legend("topleft", c("Total SOC", "Y", "O"), bty="n", lty=1, pch=NA, col=c("black
 
 ## What if?
 For example, what if you wanted to modify the model adding one specific Y pool for roots and one for shoots?  
-you would just define it in your ODE system:
+
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=5}
+\usetikzlibrary{arrows,automata} 
+    \begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+        \node[state] (1) {$O$};
+        \node[state, left of=1] (d1) {$Y_r$};
+        \node[state, right of=1] (ys) {$Y_s$};
+        \coordinate[above of=1] (d2);
+        \coordinate[above of=d1] (d0);
+        \coordinate[above of=ys] (ys0);
+        \coordinate[left of=d1] (d00);
+        \coordinate[right of=ys] (dys);
+        \draw [->] (d00) to node[auto] {$I_r$} (d1);
+        \draw [->] (dys) to node[auto] {$I_s$} (ys);
+        \draw [->] (d1) to node[auto] {$h_r \cdot k_y \cdot Y$} (1);
+        \draw [->] (ys) to node[auto] {$h_s \cdot k_y \cdot Y$} (1);
+        \draw [->] (1) to node[auto] {$k_o \cdot O$} (d2);
+        \draw [->] (d1) to node[auto] {$(1-h_r) \cdot k_y \cdot Y$} (d0);
+        \draw [->] (ys) to node[auto] {$(1-h_s) \cdot k_y \cdot Y$} (ys0);
+    \end{tikzpicture}
+    
+```
+
+## What if?
+You can then just define the model as an ODE system:
 $$
-\frac{dY_{r,}}{dt}=I - k_y \cdot r \cdot Y \\
-\frac{dY_{s}}{dt}=I - k_y \cdot r \cdot Y \\
+\frac{dY_{r,}}{dt}= I_r - k_y \cdot r \cdot Y \\
+\frac{dY_{s}}{dt}= I_s - k_y \cdot r \cdot Y \\
 $$
 We then have to define these fluxes into the O pool as a sum:
 $$
 \frac{dO}{dt}= h_r \cdot k_y \cdot r  \cdot Y_r + h_s \cdot k_y \cdot r  \cdot Y_s  - k_o \cdot r  \cdot O
 $$
+And now we are ready to write this system into the solver, and then we have our model.
 
 ## What if?
-This is just an example. You can think to virtually any hypothesis (provided it is fitting a compartmental linear model definition) and represent it with an ODE. And you can also go further (like nonlinear hypotheses) since `deSolve` also solves PDE systems, I would just not go there without knowing what you are doing in terms of the properties of the model object you are creating...
+This is just an example. We assumed, among many other things, that the two `Y` pools decay at the same constant rate `k_y`, but this is not necessarily the case, it all depends on the hypothesis you want to test.  
+You can think to virtually any hypothesis (provided it is fitting a compartmental linear model definition) and represent it with an ODE. And you can also go further (like nonlinear hypotheses) since `deSolve` also solves PDE systems, I would just not go there without knowing what you are doing in terms of the properties of the model object you are creating...
 
