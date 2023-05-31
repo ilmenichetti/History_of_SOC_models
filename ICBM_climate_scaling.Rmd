@@ -18,7 +18,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 It is very well known that microbial activity, ultimately the driver of SOM decomposition, is influenced by climatic parameters.  
 
-
 <div style="float: left; width: 48%;">
 In particular, the **temperature** at which microbes are exposed causes an exponential increase of their activity as of any chemical reaction.  
 ![](lloydtaylor.png){width=100%}
@@ -27,40 +26,78 @@ Lloyd, J., Taylor, J.A., 1994. On the Temperature Dependence of Soil Respiration
 
 <div style="float: right; width: 48%;">
 The **water content** of soil is a more complicated driver, since it affects the dormancy status of microbes in their micro-enrivonment.
-![](moyano.png){width=90%}
-Moyano, F.E., Manzoni, S., Chenu, C., 2013. [...] Soil Biology and Biochemistry 59, 72–85. 
+
 </div>
 
 
+## Temperature effect on microbial activity
+
+<div style="float: left; width: 48%;">
+The impact of temperature on any chemical reaction is a well known relationship, which was formulated by Svante Arrhenius in 1889.  
+Arrhenius (born at Wik's Slott, close to Uppsala) was one of the founders of phyisical chemistry, and among other things was the first to hypothesize the greenhouse effect. He proposed (in 1986) a relatively accurate relationship between the atmospheric CO2 concentration and temperature.
+![](Arrhenius.GHG.jpg){width=70%}
+
+</div>
+<div style="float: right; width: 48%;">
+  <div class="centered">
+![](Svante_Arrhenius.jpg){width=100%}
+</div>
+</div>
 
 
-## Climate scaling?
-The most basic version of the ICBM model can be modified by rescaling the decay kinetics with climate:
-$$
-\frac{dY}{dt}=I_{(t)} - k_y \cdot \color{red}{r} \cdot Y \\
-\frac{dO}{dt}= h \cdot k_y \cdot \color{red}{r}  \cdot Y  - k_o \cdot \color{red}{r}  \cdot O
-$$
-This scaling can be introduced as a variable over time ($r_{(t)}$) or as an average constant value ($\bar{r}$) (of course introducing a scaling variable over time destroys the steady state assumption).  
+## The Arrhenius equation
+
+<div style="float: left; width: 48%;">
+The rate of any chemical reaction depends on activation energy, temperatur and the frequency factor (A) describing how often two molecules collide (assumed to be constant):  
   
-The scaling is a function of soil temperature and soil moisture:
-$r_{(t)}= f(temp, moist)$
-And it does literally what it says: it rescales the kinetics $k_y$ and $k_o$ for the effect of climate, for example an increas or decrease of the microbial activity due to temperature.
+![](Arrhenius_relationship.gif){width=100%}
+</div>
+<div style="float: right; width: 48%;">
+  <div class="centered">
+```{r, echo=F, fig.dim = c(4, 4)}
+temp=seq(270,320)
+A=1
+E_a=25000
+R=8.314
 
-## Climate scaling
+k=A*exp(-E_a/(R*temp))
 
-Such scaling is composed by at least the two components of temperature and moisture. In ICBM this is done with a linear assumption of the effects:
-$$r_{clim}= r_{temp} \cdot r_{moist}$$
-But there is no difficulty in adding more processes if we think they are affecting the kinetics (for example we might want to represent clay protection as an additional linear term here, of course constant in this case since clay content in soil is always constant.)
+plot(temp, k, type="l", xaxt="n", yaxt="n", xlab="temperature", col="red")
 
 
-## Temperature scaling
+```
+</div>
+</div>
+
+## Examples of temperature scaling
+
+
+![](effective_re_clim.png){width=75%}
+
+## Temperature sensitivity and activation energy
+
+
+<div style="float: left; width: 28%;">
+
+Respiration rates for one of the long term bare fallow experiments (Versailles in this case)
+  
+![](Lefevre1.jpg){width=90%}
+</div>
+<div style="float: right; width: 68%;">
+  <div class="centered">
+  Activation energy (according to Arrhenius) and mean residence time (according to measured respiration rate)
+![](Lefevre2.jpg){width=90%}
+
+</div>
+</div>
+
+
+## Temperature scaling globally (ICBM scaling)
 ![](Re_temp.jpg){width=90%}
 
 
-
-
 ## Temperature scaling
-There are various possibilities to represent the effect of temperature on microbial activity. These functions are classifiable under the following three groups:  
+There are various possibilities to represent the effect of temperature on microbial activity. These functions are classifiable under the following three groups and each implies certain approximations:  
 
 <div style="float: left; width: 33%;">
 *Linear:* representing the increase in activity with temperature
@@ -89,9 +126,17 @@ This is relatively rare (e.g. Daniel and Danson, 2010) due to the fact that rare
 
 
 ## Moisture scaling
-![](Re_moist.jpg){width=90%}
+<div style="float: left; width: 28%;">
+The **water content** of soil is a more complicated driver, since it affects the dormancy status of microbes in their micro-enrivonment.
+</div>
 
-## Moisture scaling
+<div style="float: right; width: 68%;">
+![](moyano.png){width=90%}
+Moyano, F.E., Manzoni, S., Chenu, C., 2013. [...] Soil Biology and Biochemistry 59, 72–85. 
+</div>
+
+
+## Moisture scaling 
 Also for moisture the functions are classifiable under three groups:
 
 <div style="float: left; width: 33%;">
@@ -117,6 +162,31 @@ plot(p, dbeta(p, 2, 2), type='l', xaxt="n", yaxt="n", ylab="", xlab="", col="blu
 ```  
 **...we are updating it to a function of this kind**
 </div>
+
+
+
+## Moisture scaling globally (ICBM scaling)
+![](Re_moist.jpg){width=90%}
+
+
+## Climate scaling?
+The most basic version of the ICBM model can be modified by rescaling the decay kinetics with climate:
+$$
+\frac{dY}{dt}=I_{(t)} - k_y \cdot \color{red}{r} \cdot Y \\
+\frac{dO}{dt}= h \cdot k_y \cdot \color{red}{r}  \cdot Y  - k_o \cdot \color{red}{r}  \cdot O
+$$
+This scaling can be introduced as a variable over time ($r_{(t)}$) or as an average constant value ($\bar{r}$) (of course introducing a scaling variable over time destroys the steady state assumption).  
+  
+The scaling is a function of soil temperature and soil moisture:
+$r_{(t)}= f(temp, moist)$
+And it does literally what it says: it rescales the kinetics $k_y$ and $k_o$ for the effect of climate, for example an increas or decrease of the microbial activity due to temperature.
+
+## Climate scaling
+
+Such scaling is composed by at least the two components of temperature and moisture. In ICBM this is done with a linear assumption of the effects:
+$$r_{clim}= r_{temp} \cdot r_{moist}$$
+But there is no difficulty in adding more processes if we think they are affecting the kinetics (for example we might want to represent clay protection as an additional linear term here, of course constant in this case since clay content in soil is always constant.)
+
 
 ## Combination
 ![](Re_crop.jpg){width=90%}

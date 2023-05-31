@@ -356,10 +356,80 @@ More pools define a more complex curve. This results in less approximation, and 
 For example a 1 pool model is not going to be able to represent the long-term trends of the more recalcitrant soil components well, and already on a few decades scale it can accumulate a significant error.  
 When extrapolating on long time scales (several centuries or more) 3 or more pools are necessary (assuming we can initialize the model correctly).
 
-## The cyclical discussion: "breaking" SOC decomposition paradigm?
+## Are we "breaking" SOC paradigm?
 
-TIMELINE HERE
+Organic matter has been studied for centuries through different "phases": from natural observation ("humus", pre-1840) to chemical concepts ("humic substances" and fraction, 1840-1940s) to mosre recent ecological concepts (1940-), recognizing more and more the complex relationships between SOM and environment. Some see it as **paradigm shift**, some see it as **evolution**.
 
+```{tikz, fig.cap = "", fig.ext = 'png', fig.width=10.5}
+\usetikzlibrary{mindmap,shadows}
+
+\begin{tikzpicture}[]
+  
+  % limits
+  \newcount\yearOne; \yearOne=1820
+  \def\w{19}    % width of axes
+  \def\n{21}     % number of decades
+  \def\lt{0.40} %  ten tick length
+  \def\lf{0.36} % five tick length
+  \def\lo{0.30} %  one tick length
+  
+  % help functions
+  \def\yearLabel(#1,#2){\node[above] at ({(#1-\yearOne)*\w/\n/10},\lt) {#2};}
+  \def\yearArrowLabel(#1,#2,#3,#4){
+    \def\xy{{(#1-\yearOne)*\w/\n/10}}; \pgfmathparse{int(#2*100)};
+    \ifnum \pgfmathresult<0
+      \def\yyp{{(\lt*(0.90+#2))}}; \def\yyw{{(\yyp-\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[below,black] at (\xy,\yyw) {#4};
+    \else
+      \def\yyp{{(\lt*(0.10+#2)}}; \def\yyw{{(\yyp+\lt*#3)}}
+      \draw[<-,thick,black,align=center] (\xy,\yyp) -- (\xy,\yyw) node[above,black] at (\xy,\yyw) {#4};
+    \fi}
+  
+    \def\yearArrowLabelRed(#1,#2,#3,#4){
+    \def\xy{{(#1-\yearOne)*\w/\n/10}}; \pgfmathparse{int(#2*100)};
+    \ifnum \pgfmathresult<0
+      \def\yyp{{(\lt*(0.90+#2))}}; \def\yyw{{(\yyp-\lt*#3)}}
+      \draw[<-,thick,red,align=center] (\xy,\yyp) -- (\xy,\yyw) node[below,red] at (\xy,\yyw) {#4};
+    \else
+      \def\yyp{{(\lt*(0.10+#2)}}; \def\yyw{{(\yyp+\lt*#3)}}
+      \draw[<-,thick,red,align=center] (\xy,\yyp) -- (\xy,\yyw) node[above,red] at (\xy,\yyw) {#4};
+    \fi}
+  
+  % axis
+  %\draw[thick] (0,0) -- (\w,0);
+  \draw[->,thick] (-\w*0.03,0) -- (\w*1.03,0);
+  
+  % ticks
+  \foreach \tick in {0,1,...,\n}{
+    \def\x{{\tick*\w/\n}}
+    \def\year{\the\numexpr \yearOne+\tick*10 \relax}
+  	\draw[thick] (\x,\lt) -- (\x,-\lt) % ten tick
+	             node[below] {\year};
+	
+	\ifnum \tick<\n
+	  \draw[thick] ({(\x+\w/\n/2)},0) -- ({(\x+\w/\n/2)},\lf); % five tick
+      \foreach \ticko in {1,2,3,4,6,7,8,9}{
+        \def\xo{{(\x+\ticko*\w/\n/10)}}
+  	    \draw[thick] (\xo,0) -- (\xo,\lo);  % one tick
+	}\fi
+  }
+  
+  % label
+  \yearArrowLabel(1830, 2.0,2.0, Hundesdhagen - humus layer classification )
+  \yearArrowLabel(1881, -3,5.0, C. Darwin, Formation of vegetable
+mould through the action of worms)
+  \yearArrowLabel(1889, 1.5,1.0, Müller - mull, mor, moder )
+  \yearArrowLabel(1913, 1,1, Maillard)
+  \yearArrowLabel(1937, 3,2, Tyurin - processes are soil specific)
+  \yearArrowLabelRed(1936, -3,1, Waksman  - humic fractions)
+  \yearArrowLabel(1961, 2.5,5.0, Kononova - soil organic matter bioformation theory)
+  \yearArrowLabelRed(2011, -3.5,2.0, Schmidt et al.: persistence as an ecosystem property)
+  \yearArrowLabelRed(2015, 2,2.0, Lehman and Kleber: we need to change)
+
+
+  
+\end{tikzpicture}
+```
 
 ## Representing reality: the view of experimentalists
 ![](Schimel.jpg){width=70%}

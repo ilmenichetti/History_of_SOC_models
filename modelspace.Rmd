@@ -28,8 +28,7 @@ Fitness is proportional to the likelihood of a particular solution. So the space
 ...and rarely spaces will look so regular.
 </div>
 
-## A complex space is a problem for optimization algorithms
-
+## A complex space is a problem for optimization algorithms 
 
 <div style="float: left; width: 48%;">
   <div class="centered">
@@ -57,6 +56,9 @@ $$
 $$
 This biomass model has only two parameters, and it is rather easy to visualize.
 
+  
+*Almeida, J.P., Menichetti, L., Ekblad, A., Rosenstock, N.P., Wallander, H., 2023. Phosphorus regulates ectomycorrhizal fungi biomass production in a Norway spruce forest. Biogeosciences 20, 1443–1458.*
+
 ## An example of a bidimensional space
 <div style="float: left; width: 58%;">
   <div class="centered">
@@ -67,6 +69,10 @@ This biomass model has only two parameters, and it is rather easy to visualize.
 The difficult thing was to determine the optimal model solution.  
   
 Because there isn't one, there are many.
+</div>
+
+
+  </div>
 </div>
 
 ## A more relatable problem: recalibrating ICBM
@@ -80,14 +86,33 @@ One of the interactions in the model is between the inputs (so the allometric co
   </div>
 </div>
 
-## Remember that rarely a model space is only bidimensional!
+
+
+## Adding constraints: modeling 14C data
+
+<div style="float: left; width: 48%;">
+Pareto front type optimization problems,  representing trade-off between choices, are frequent.  
+
+Here I was testing how different model structures (two and three pools with and without inert pool) can fit both total C and 14C data (1 = calibrating only on total SOC, 0 = only 14C).  
+The same model and parameterization cannot fit perfectly both source of data.  The two sources of data have different optimal parameterization.  
+  
+We can constrain more the model by adding other data sources, but this brings in new questions (for example: "*which data source do I trust more?*")
+
+</div>
+<div style="float: right; width: 48%;">
+  <div class="centered">
+![](ZOFE.jpg){width=100%}
+</div>
+</div>
+
+## Remember that rarely a model space is only bidimensional! {.build}
 
 Models have many more parameters, with usually a highly multidimensional space.
   
 This is no big deal, just AVOID to try to visualize a multidimensional space. Remember just that any solution will scale, if it works for 2 dimensions it will work for 20.
 
 
-## Ways to deal with the problem
+## Ways to deal with the problem {.build}
 
 1. Be aware of the risk. Repeat your optimizations to see if they are stable.
 2. Use stochastic methods to explore the model space instead of relying on hill climbing methods.
