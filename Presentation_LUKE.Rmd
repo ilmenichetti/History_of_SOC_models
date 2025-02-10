@@ -164,7 +164,9 @@ A **(badly incomplete)** list of the major (only linear ones, we'll come to this
 \end{tikzpicture}
 ```
 
-A relatively recent literature review (Campbell and Paustian 2015) found **87** different SOM models (and this not considering broader models, like complete ecosystem models, and more speculative studies on SOM model structures)
+A relatively recent literature review (Campbell and Paustian 2015) found **87** different SOM models (and this not considering broader models, like complete ecosystem models, and more speculative studies on SOM model structures).  
+  
+They mostly differ for their number of pools.
 
 
 ## They are (almost) all compartmental models
@@ -202,11 +204,14 @@ The key similarity between them is that all these models are **linear in respect
 $$
 \frac{dC_s}{dt} = I - k \cdot C_s
 $$
-We are just adding one more line to the ODE system for each pool, but they are all linear.
+We are just adding one more line to the ODE system for each pool, but they are all linear.  
 
-## The "Golden Era": RothC (1977)
-When computer power started to be reasonably available, more complex models trying to represent SOC in more detail arised. In the decades between the late 70s and late 90s the foundations of most currently used SOC models were laid. 
-  ![](rothc.jpg){height=300}
+The question we should ask is always: do we have the information needed for operating more choiches?
+
+
+<!-- ## The "Golden Era": RothC (1977) -->
+<!-- When computer power started to be reasonably available, more complex models trying to represent SOC in more detail arised. In the decades between the late 70s and late 90s the foundations of most currently used SOC models were laid.  -->
+<!--   ![](rothc.jpg){height=300} -->
 
 
 ## A seemingly different one: Q (1996)
@@ -261,25 +266,25 @@ Many models have developed around the idea of having measurable pools, or such i
 But any fractionation will be based on an assumed conceptual model defining recalcitrance as  **discrete**, simplifying the quality function and imposing assumptions already on the data.  
 It kind of works, kind of doesn't.
 
-## The advantages of minimalism: introducing ICBM
-ICBM takes the opposite approach than Q: keep it simple! It is a rather minimalistic model with only two pools, one ($Y$) representing the young litter and another ($O$) representing the "old", or "humified", organic matter.  
-The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$.
-```{tikz, fig.cap = "", fig.ext = 'png', fig.width=4.5}
-\usetikzlibrary{arrows,automata} 
-    \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick]
-        \node[state] (1) {$O$};
-        \node[state, left of=1] (d1) {$Y$};
-        \coordinate[above of=1] (d2);
-        \coordinate[above of=d1] (d0);
-        \coordinate[left of=d1] (d00);
-        \draw [->] (d00) to node[auto] {$I$} (d1);
-        \draw [->] (d1) to node[auto] {$h \cdot k_y \cdot Y$} (1);
-        \draw [->] (1) to node[auto] {$k_o \cdot O$} (d2);
-        \draw [->] (d1) to node[auto] {$(1-h) \cdot k_y \cdot Y$} (d0);
-    \end{tikzpicture}
-    
-```
-Do we have the information needed for operating more choiches?
+<!-- ## The advantages of minimalism: introducing ICBM -->
+<!-- ICBM takes the opposite approach than Q: keep it simple! It is a rather minimalistic model with only two pools, one ($Y$) representing the young litter and another ($O$) representing the "old", or "humified", organic matter.   -->
+<!-- The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$. -->
+<!-- ```{tikz, fig.cap = "", fig.ext = 'png', fig.width=4.5} -->
+<!-- \usetikzlibrary{arrows,automata}  -->
+<!--     \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick] -->
+<!--         \node[state] (1) {$O$}; -->
+<!--         \node[state, left of=1] (d1) {$Y$}; -->
+<!--         \coordinate[above of=1] (d2); -->
+<!--         \coordinate[above of=d1] (d0); -->
+<!--         \coordinate[left of=d1] (d00); -->
+<!--         \draw [->] (d00) to node[auto] {$I$} (d1); -->
+<!--         \draw [->] (d1) to node[auto] {$h \cdot k_y \cdot Y$} (1); -->
+<!--         \draw [->] (1) to node[auto] {$k_o \cdot O$} (d2); -->
+<!--         \draw [->] (d1) to node[auto] {$(1-h) \cdot k_y \cdot Y$} (d0); -->
+<!--     \end{tikzpicture} -->
+
+<!-- ``` -->
+<!-- Do we have the information needed for operating more choiches? -->
 
 
 ## The advantages of more pools: long-term accuracy
@@ -371,11 +376,11 @@ We know that SOC decomposition is process mediated by microbes, their growth and
 *Schimel, Joshua. “Modeling Ecosystem-Scale Carbon Dynamics in Soil: The Microbial Dimension.” Soil Biology and Biochemistry 178 (March 2023)*
 
 ## The cyclical discussion: is more realistic more better?
-Making decomposition controlled by enzymes/microbes means making the model nonlinear, moving from ordinary differential equations to partial differential equations.
+Making decomposition controlled by enzymes/microbes means making the model **nonlinear** in its first derivative (meaning the decomposition rate changes over time), moving from ordinary differential equations to partial differential equations. Ok,these are finally something different!
 
 ![](SOC.png){width=60%}
 
-Nonlinearities in models can lead to weird behaviors, for example oscillations. Because of the nonlinear (more than linear) effects, any mistake can have an amplificated effect on predictions.
+But nonlinearities in models can lead to weird behaviors, for example oscillations. Any mistake can have an amplificated effect on predictions and feasible parameter ranges become razor sharp.
 
 ## More complicated (nonlinear) models bring extrapolation uncertainty
 
