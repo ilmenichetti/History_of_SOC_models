@@ -1,5 +1,5 @@
 ---
-title: "The evolution of SOC modeling"
+title: "The historical evolution of SOC modeling"
 author: "Lorenzo Menichetti"
 date: "`r Sys.Date()`"
 output:
@@ -88,28 +88,6 @@ Compared to Hénin and Dupuis, the term $I$ substitutes $h \cdot C_i$, but since
 </div>
 
 
-
-## Differences between Olson and Hénin & Dupuis
-While Olson's model is actually a single pool model, Hénin & Dupuis define the input flux to the soil as a fraction of the total C input $C_i$, which can describe the litter. When considering the implicit fluxes from the system (respiration), in order to close the mass balance, we need to account also for the respiration from the litter:
-
-```{tikz, fig.cap = "", fig.ext = 'png', fig.width=3.5}
-\usetikzlibrary{arrows,automata} 
-    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,>=stealth',thick]
-        \node[state] (1) {$C_s$};
-        \coordinate[left of=1] (d1);
-        \coordinate[above of=1] (d2);
-        \coordinate[above of=d1] (d0);
-        \coordinate[left of=d1] (d00);
-        \draw [->] (d00) to node[auto] {$C_i$} (d1);
-        \draw [->] (d1) to node[auto] {$h \cdot C_i$} (1);
-        \draw [->] (1) to node[auto] {$k \cdot C_s$} (d2);
-        \draw [->] (d1) to node[auto] {$(1-h) \cdot C_i$} (d0);
-    \end{tikzpicture}
-    
-```
-
-
-
 ## Many many many many SOC models
 
 A **(badly incomplete)** list of the major (only linear ones, we'll come to this later) SOC models over time:
@@ -189,70 +167,6 @@ A **(badly incomplete)** list of the major (only linear ones, we'll come to this
 A relatively recent literature review (Campbell and Paustian 2015) found **87** different SOM models (and this not considering broader models, like complete ecosystem models, and more speculative studies on SOM model structures)
 
 
-
-## The Golden Era: RothC (1977)
-When computer power started to be reasonably available, more complex models trying to represent SOC in more detail arised. In the decades between the late 70s and late 90s the foundations of most currently used SOC models were laid. 
-  ![](rothc.jpg){height=300}
-
-## The Golden Era: Century (1987)
-<div class="columns-2">
-  <div class="centered">
-![](century.jpg){width=65%}
-  </div>
-
-<div>
-These models rely mathematically on the same principle enunciated by Hénin and Dupuis or Olson, but involve more pools. These pools are used to represent various hypotheses to modify the initial first-order kinetic assumption, ultimately to represent better the data available for calibrating the model. And none of them is really right or wrong, or better in absolute terms.
-  </div>
-</div>
-
-
-## An interesting outlier: Q
-Q generalizes by assuming a continuous quality spectrum instead of discrete compartments.
-```{r, echo=F}
-x <- seq(-4, 4, length=100)
-
-#create a vector of values that shows the height of the probability distribution
-#for each value in x
-y <- dnorm(x)
-
-#plot x and y as a scatterplot with connected lines (type = "l") and add
-#an x-axis with custom labels
-plot(x,y, type = "l", lwd = 2, axes = FALSE, xlab = "quality", ylab = "amount of molecules represented")
-box()
-
-```
-Thetheory is very elegant, but in order to be mathematically manageable it assumes a normal distribution for SOC quality (other assumptions can be made, but the model becomes hard to solve)
-
-
-
-## The problem of model initialization
-"Model initialization" means to specify the initial state of the system. For multi-compartment models, this means determining the initial size of each pool.  
-There are multiple ways to realize this, but **the information problem is always the same: we need to infer the pool distributions by assuming a long past history in each site**. We can assume steady state at the beginning and therefore constant inputs, or we can assume variable inputs, but the problem is in any case usually that we do not know much about past inputs and we need to be readyto make strong assumptions.  
-Methods are in general:  
-
-* Solved steady state
-* Spin-up runs
-* Possible alternative: calibrating the initial steady state
-
-These methods are essentially details about a specific implementation, but no one solves the information problem above. They might be better suited to your specific case and the assumptions you are ready to make.
-
-
-## The dream of "data-based" initialization: soil organic matter "quality"
-  ![](quality.jpg){height=450}
-
-## The dream of "data-based" initialization: Yasso, Zimmerman, etc...
-Many models have developed around the idea of having measurable pools, or such idea developed afterwards with specific fractionation techniques.
-  ![](zimmerman.jpg){height=300}
-But any fractionation will be based on an assumed conceptual model defining recalcitrance, simplifying a lot the quality function and imposing assumptions already on the data.  
-It kind of works, kind of doesn't.
-
-
-## Things get complicated
-Soil C models are required to represent more things than just the aerobic C decomposition process.  
-In the most recent decades we can observe a very large amount of models being published that are based on many different processes and integrate many components (es. ECOSSE, ORCHIDEE, DayCent).
-  ![](orchidee.png){height=350}
-In these models the soil decomposition part is just a module. But it still works according to the same principles.
-
 ## Representing reality?
 <div class="columns-2">
   <div class="centered">
@@ -267,43 +181,37 @@ In these models the soil decomposition part is just a module. But it still works
 
 </div>
 
-## One possible tree of SOC models concepts
-```{tikz, fig.cap = "", fig.ext = 'png', fig.width=5.5}
 
-\usetikzlibrary{mindmap,shadows}
 
-\begin{tikzpicture}
-  \path[mindmap,concept color=black,text=white]
-    node[concept] {SOC decay models}
-    [clockwise from=0]
-    child[concept color=green!50!black] {
-      node[concept] {Linear}
-      [clockwise from=95]
-      child { node[concept] {Minimalist}}
-      child { node[concept] {Lab-based initialization}}
-      child { node[concept] {Inert} }
-      child { node[concept] {Feedback} }
-      child[concept color=orange] { node[concept] {continuous} }
-    }
-    child[concept color=red] { node[concept] {Nonlinear} }
+## The "Golden Era": RothC (1977)
+When computer power started to be reasonably available, more complex models trying to represent SOC in more detail arised. In the decades between the late 70s and late 90s the foundations of most currently used SOC models were laid. 
+  ![](rothc.jpg){height=300}
 
-;
-\end{tikzpicture}
-```
 
-## The basic SOM model choices
+## The problem of model initialization
+"Model initialization" means to specify the initial state of the system. For multi-compartment models, this means determining the initial size of each pool.  
+There are multiple ways to realize this, but **the information problem is always the same: we need to infer the pool distributions by assuming a long past history in each site**. 
+Methods are in general:  
 
-* Do we assume some "inert" SOM?
-* How many different C pools do we represent?
-* Do we represent mass feedbacks?
-* Is it fine to use ordinary differential equations, or do we need PDE?
+* Solved steady state
+* Spin-up runs
+* Possible alternative: calibrating the initial steady state
 
-Each of these choices will bring implications in the extrapolation we can do with the model, some quite dramatic.
+These methods are essentially details about a specific implementation, but no one solves the information problem above. 
 
+
+## The dream of "data-based" initialization: soil organic matter "quality" is not linear
+  ![](quality.jpg){height=450}
+
+## The dream of "data-based" initialization: Yasso, Zimmerman, etc...
+Many models have developed around the idea of having measurable pools, or such idea developed afterwards with specific fractionation techniques.
+  ![](zimmerman.jpg){height=300}
+But any fractionation will be based on an assumed conceptual model defining recalcitrance as  **discrete**, simplifying the quality function and imposing assumptions already on the data.  
+It kind of works, kind of doesn't.
 
 ## The advantages of minimalism: introducing ICBM
 ICBM is a rather minimalistic model with only two pools, one ($Y$) representing the young litter and another ($O$) representing the "old", or "humified", organic matter.  
-The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$: all organic material coming to the soil is either instantly respired or transferred to the SOM.
+The model is conceptually not so distant from Hénin and Dupuis model, and it becomes identical if the decay constant of the "young" pool, $k_y$, is set to $1$.
 ```{tikz, fig.cap = "", fig.ext = 'png', fig.width=4.5}
 \usetikzlibrary{arrows,automata} 
     \begin{tikzpicture}[shorten >=1pt,node distance=2.3cm,>=stealth',thick]
@@ -319,44 +227,17 @@ The model is conceptually not so distant from Hénin and Dupuis model, and it be
     \end{tikzpicture}
     
 ```
+Do we have the information needed for operating more choiches?
 
-
-## The advantages of minimalism: easily solved steady states
-No system will accumulate or lose C indefinitely. The rates will always tend to zero.  
-When the rate of SOC variation is zero, the system is in **equilibrium**, and inputs equal outputs. For example a land use change from a relatively rich environment (a forest) to an environment with less C inputs (agriculture). SOC will decrease over time until it reaches the new equilibrium:
-```{r echo=FALSE, out.width="50%"}
-X_0=50
-k=0.1
-tim=seq(1:100)
-L=2
-X=c(X_0,(L/k)*(1-exp(-k*tim))+X_0*exp(-k*tim))
-
-plot(c(0,tim), X, type="l", ylim=c(0,55), ylab="C stocks", xlab="Time", yaxt="n", xaxt="n")
-abline(h=X_0, lty=2, col="red")
-text(10,X_0+1.2, "Initial steady state", col="red", cex=0.6)
-abline(h=L/k, lty=2, col="darkgreen")
-text(10,L/k+1.2, "Final steady state", col="darkgreen", cex=0.6)
-
-```
-
-## The advantages of minimalism: easily solved steady states
-The steady states are, by definition, where the rate of variation $\frac{dC}{dt}=0$. For a single pool model (Olson) this becomes easily solved. The steady state means that for a certain amount of C $C_{ss}$ the variation is zero: $0 = I - k \cdot C_{ss}$, which means $k \cdot C_{ss} = I$ and therefore $C_{ss}=\frac{I}{k}$.
-  
-A slightly more complicated model, like the two pool (Y and O) ICBM, has still relatively simple analyitcal solution:
-$$
-Y_{ss}=\frac{I}{k_y}\\
-O_{ss}=\epsilon\cdot\frac{I}{k_o}
-$$
-Any linear model, with an arbitrary number of pools, has an analytical solution. But having it so short and easily manageable can sometimes be useful.
 
 ## The advantages of more pools: long-term accuracy
 
 More pools define a more complex curve. This results in less approximation, and the models become more general.  
 ![](1vs3pools.png){width=70%}
 For example a 1 pool model is not going to be able to represent the long-term trends of the more recalcitrant soil components well, and already on a few decades scale it can accumulate a significant error.  
-When extrapolating on long time scales (several centuries or more) 3 or more pools are necessary (assuming we can initialize the model correctly).
+When extrapolating on long time scales (several centuries or more) 3 or more pools are necessary (assuming we can initialize the model correctly). *There is no "right" number of pools, it is a trade off.*
 
-## Are we "breaking" SOC paradigm?
+## Are we now "breaking" the SOC paradigm?
 
 Organic matter has been studied for centuries through different "phases": from natural observation ("humus", pre-1840) to chemical concepts ("humic substances" and fraction, 1840-1940s) to mosre recent ecological concepts (1940-), recognizing more and more the complex relationships between SOM and environment. Some see it as **paradigm shift**, some see it as **evolution**.
 
@@ -432,10 +313,6 @@ mould through the action of worms)
 ```
 
 ## Representing reality: the view of experimentalists
-![](Schimel.jpg){width=70%}
-*Schimel, Joshua. “Modeling Ecosystem-Scale Carbon Dynamics in Soil: The Microbial Dimension.” Soil Biology and Biochemistry 178 (March 2023)*
-
-## Representing reality: the view of experimentalists
 We know that SOC decomposition is process mediated by microbes, their growth and by their exoenzymes production, so representing these processes will produce more accurate models.  
 
 ![](Schimel2.jpg){width=55%}
@@ -453,28 +330,5 @@ Nonlinearities in models can lead to weird behaviors, for example oscillations. 
 ![](Zheng_et_al.png){width=60%}
 Shi, Zheng, Sean Crowell, Yiqi Luo, and Berrien Moore. “Model Structures Amplify Uncertainty in Predicted Soil Carbon Responses to Climate Change.” Nature Communications 9, no. 1 (June 4, 2018)
 
-## Scary: linear algebra for linear models
-Compartmental models can be expressed within a generic linear algebra (matrix) notation
-$$
-\frac{dC_{(t)}}{dt}=I_{(t)} + A_{(t)} \cdot C_{(t)}
-$$
-For example the ICBM model (assuming constant average inputs), written explicitly, is:
-$$
- \frac{dC_{(t)}}{dt}=\begin{bmatrix} I\\  0\\  \end{bmatrix} +
-  \xi \cdot
-    \begin{bmatrix} -k_y & \epsilon \\ 0 & -k_o  \end{bmatrix} \cdot
-    \begin{bmatrix} Y \\ O \end{bmatrix}
-$$
-This notation allows us to generalize the main differences between model structures:
-```{r}
-
-df <- data.frame (first_column  = c("$I+\\xi \\cdot A \\cdot C_{(t)}$", "$I+\\xi \\cdot A (C_{(t)}) \\cdot C_{(t)}$"),
-                  second_column = c("$I+\\xi_{(t)} \\cdot A \\cdot C_{(t)}$", "$I+\\xi (t) \\cdot A (C_{(t)}) \\cdot C_{(t)}$")
-                  )
-colnames(df)<-c("Autonomous", "Non-autonomous")
-rownames(df)<-c("Linear", "Non-linear")
-  
-knitr::kable(df)
-```
 
 (it brings also the pretty neat advantage of an easy nalytical steady state for anything linear...)
